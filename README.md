@@ -3,4 +3,4 @@ It's a Ecommerce Website. It's has been build using Laravel Framework along with
 
 This was 1st build with Node.js in my ATP3(Advanced Topics in Programming 3) during Mid Term project submission and has been improved including a lot of features in this Laravel build during the Final Term.
 
-To run this on your Desktop you need Laravel. Download Laravel using composer and create a project then extract & replace all the files and folder from the clone zip to that project directory you have created. Make sure Xampp and PHPMyAdmin is running on your Computer. import clothing.sql database in PHPMyAdmin and then run the project.  
+To run this on your Desktop you need Laravel as the Laravel's vendor folder is missing in this repository. Download Laravel using composer and create a project then extract & replace all the files and folder from the clone zip to that project directory you have created. Make sure Xampp and PHPMyAdmin is running on your Computer. import clothing.sql database in PHPMyAdmin and then run the project.  
