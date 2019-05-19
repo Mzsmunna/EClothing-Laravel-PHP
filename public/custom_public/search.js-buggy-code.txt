@@ -1,0 +1,218 @@
+var product;
+      var favourites = result.favourites;
+      var ratings = result.ratings;
+      var usertype = result.usertype;
+
+			if(search=="%")
+			{
+				product = result.pfor;
+			}else{
+				product = result.result;
+			}
+
+			$(".row").html("");
+
+			for(var i=0;i<product.length;i++)
+			{
+				/*$(".row").append(`<div class="col-lg-4 col-sm-6 portfolio-item" id="${res[i].pid}">
+          <input type="hidden" name="pid" value="${res[i].pid}"/>
+          <input type="hidden" name="pname" value="${res[i].pname}"/>
+          <input type="hidden" name="ptitle" value="${res[i].ptitle}"/>
+          <input type="hidden" name="pfor" value="${res[i].pfor}"/>
+          <input type="hidden" name="category" value="${res[i].category}"/>
+          <input type="hidden" name="size" value="${res[i].size}"/>
+          <input type="hidden" name="available" value="${res[i].available}"/>
+          <input type="hidden" name="price" value="${res[i].price}"/>
+          <input type="hidden" name="cost" value="${res[i].cost}"/>
+          <input type="hidden" name="currency" value="${res[i].currency}"/>
+          <input type="hidden" name="offer" value="${res[i].offer}"/>
+          <div class="card h-100">
+            <a href="/cloth/${res[i].pid}"><img class="card-img-top" src="custom_public/uploads/products/${res[i].pname}/images/${res[i].pname}0.jpg" onerror="this.src = 'http://placehold.it/700x400'" alt=""></a>
+            <div class="card-body">
+              <h4 class="card-title">
+                <a href="/cloth/${res[i].pid}">${res[i].pname}</a>
+              </h4>
+              <p class="card-text">
+                Product For : ${res[i].pfor}</br>
+                Product Category : ${res[i].category}</br>
+                Product Price : ${res[i].price} ${res[i].currency}</br>
+                Product Size : ${res[i].size}
+              </p>
+						</div>
+					</div>
+				</div>`);*/
+				if(product[i].available>0)
+				{
+          $(".row").append(`
+          <div class="col-lg-4 col-sm-6 portfolio-item" id="${product[i].pid}">
+            <input type="hidden" name="pid" value="${product[i].pid}"/>
+            <input type="hidden" name="pname" value="${product[i].pname}"/>
+            <input type="hidden" name="pfor" value="${product[i].pfor}"/>
+            <input type="hidden" name="category" value="${product[i].category}"/>
+            <input type="hidden" name="size" value="${product[i].size}"/>
+            <input type="hidden" name="available" value="${product[i].available}"/>
+            <input type="hidden" name="qavailable" value="${product[i].available}"/>
+            <input type="hidden" name="xsavailable" value="${product[i].xs_available}"/>
+            <input type="hidden" name="savailable" value="${product[i].s_available}"/>
+            <input type="hidden" name="mavailable" value="${product[i].m_available}"/>
+            <input type="hidden" name="lavailable" value="${product[i].l_available}"/>
+            <input type="hidden" name="xlavailable" value="${product[i].xl_available}"/>
+            <input type="hidden" name="xxlavailable" value="${product[i].xxl_available}"/>`);
+
+            if((product[i].offer==0)||(product[i].offer==null))
+            {
+              $(".row").append(`<input type="hidden" name="price" value="${product[i].price}"/>`);
+            }
+            else{
+              var discount = (product[i].price * product[i].offer) / 100;
+              var newprice = product[i].price - discount;
+              $(".row").append(`<input type="hidden" name="price" value="${newprice}"/>`);
+            }
+
+            $(".row").append(`
+            <input type="hidden" name="cost" value="${product[i].cost}"/>
+            <input type="hidden" name="currency" value="${product[i].currency}"/>
+            <input type="hidden" name="offer" value="${product[i].offer}"/>
+            <div class="card h-100 item">
+            <a href="/cloth/${product[i].pid}"><img class="card-img-top" src="custom_public/uploads/products/${product[i].pname}}/images/${product[i].pname}0.jpg" onerror="this.src = 'http://placehold.it/700x400'" alt=""></a>
+            <div class="card-body">
+              <h4 class="card-title">
+                <a href="/cloth/${product[i].pid}">${product[i].pname}</a>
+              </h4>
+            <h5><div class="product-rating">`);
+
+            var productRating = Math.floor(product[i].rating);
+            console.log(productRating);
+
+            if(productRating > 0)
+            {
+              for(var a = 1; a<=productRating ; a++)
+              {
+                $(".row").append(`<span class="fa fa-star" data-rating="${a}"></span>`);
+              }
+              for(var a = productRating ; a < 5; a++)
+              {
+                $(".row").append(`<span class="fa fa-star-o" data-rating="${a+1}"></span>`);
+              }
+              $(".row").append(`<span class="ml-2">${product[i].rating.toFixed(2)}</span>`);
+            }
+                  
+            if((product[i].rating==0)||(product[i].rating==null))
+            {
+              $(".row").append(`<input type="hidden" name="rating" class="rating-value" value="0">`);
+            }else{
+              $(".row").append(`<input type="hidden" name="rating" class="rating-value" value="${product[i].rating}">`);
+            }
+
+            $(".row").append(`</div></h5>`);
+
+            if((product[i].offer==0)||(product[i].offer==null))
+            {
+              $(".row").append(`<h5>${product[i].price} ${product[i].currency}</h5>`);
+            }else{
+              $(".row").append(`<h5><strike>${product[i].price} ${product[i].currency}</strike> <span class="ml-1">${newprice} ${product[i].currency}</span><span class="pull-right text-danger">${product[i].offer}% off</span></h5>`);
+            }
+                
+            $(".row").append(`<p class="card-text">
+                  Product For : ${product[i].pfor} </br>
+                  Product Category :  ${product[i].category} </br>
+                  Product Price :  ${product[i].price} ${product[i].currency} </br>
+                  Product Size :  ${product[i].size}
+                </p>
+                
+              </div>
+              <div class="card-footer">
+                <h6> Give Rating : 
+                  <div class="star-rating pull-right" style="cursor: pointer">
+                    <span class="fa fa-star-o" data-rating="1"></span>
+                    <span class="fa fa-star-o" data-rating="2"></span>
+                    <span class="fa fa-star-o" data-rating="3"></span>
+                    <span class="fa fa-star-o" data-rating="4"></span>
+                    <span class="fa fa-star-o" data-rating="5"></span>`);
+
+                  var found = false;   
+
+                  for(var j=0;j<ratings.length;j++){
+                    if($ratings[j].pid==product[i].pid){
+                      $(".row").append(`<input type="hidden" name="rating" class="rating-value" value="${$ratings[j].rating}">`);
+                        found = true; 
+                        break;
+                      }
+                  }
+                  if(found == false){
+                      $(".row").append(`<input type="hidden" name="rating" class="rating-value" value="0">`);
+                  }
+                    $(".row").append(`</div>
+                </h6>
+              </div>
+              <div class="card-footer">
+                <button type="button" class="btn btn-success btn-sm mzs-atc">Add to Cart</button>
+                <select class="allsizes" name="allsizes">
+                  <option value="${product[i].available}">Size</option>`);
+
+                  if((product[i].xs_available!=null)||(product[i].xs_available!=0))
+                  {
+                    $(".row").append(`<option value="${product[i].xs_available}">XS</option>`);
+                  }
+                  
+                  if((product[i].s_available!=null)||(product[i].s_available!=0))
+                  {
+                    $(".row").append(`<option value="${product[i].s_available}">S</option>`);
+                  }
+                  
+                  if((product[i].m_available!=null)||(product[i].m_available!=0))
+                  {
+                    $(".row").append(`<option value="${product[i].m_available}">M</option>`);
+                  }
+                  
+                  if((product[i].l_available!=null)||(product[i].l_available!=0))
+                  {
+                    $(".row").append(`<option value="${product[i].l_available}">L</option>`);
+                  }
+                  
+                  if((product[i].xl_available!=null)||(product[i].xl_available!=0))
+                  {
+                    $(".row").append(`<option value="${product[i].xl_available}">XL</option>`);
+                  }
+                  
+                  if((product[i].xxl_available!=null)||(product[i].xxl_available!=0))
+                  {
+                    $(".row").append(`<option value="${product[i].xxl_available}">XXL</option>`);
+                  }
+                  
+                  $(".row").append(`</select>
+                <input class="quantity" type="number" name="quantity" min="1" max="${product[i].available}" value="1">`);
+
+              found = false;   
+
+              for(var k=0;j<favourites.length;k++)
+              {
+                if($favourites[k].pid==product[i].pid)
+                {
+                  $(".row").append(`<button type="button" class="btn btn-light pull-right text-danger love" data-toggle="tooltip" data-placement="bottom" title="Added as favourite"><i class="fa fa-heart mzs-atf" style="font-size:24px"></i></button>`);
+
+                  $found = true; 
+                  break;
+                }
+              }
+              if(found == false)
+              {
+                $(".row").append(`<button type="button" class="btn btn-light pull-right text-danger love" data-toggle="tooltip" data-placement="bottom" title="Add to favourite"><i class="fa fa-heart-o mzs-atf" style="font-size:24px"></i></button>`);
+              }
+
+              $(".row").append(`</div></div></div>`);
+        }
+        
+        //$(".row").append(`</div>`);
+
+            /*if(name!=""){
+            <div class="card-footer">
+              <button type="button" class="btn btn-success btn-sm mzs-atc">Add to Cart</button>
+              <input type="number" name="quantity" min="1" max="<%= productlist[i].available %>" value="1">
+            </div>
+            <% } %>
+          </div>
+        </div>
+        <% } %>);*/
+
+      }
