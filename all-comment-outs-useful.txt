@@ -1,0 +1,45 @@
+//Server Side Validation
+/*$this->validate($request, [
+	'usernameEmail' => 'required',
+	'password' => 'required'
+]);
+return Redirect::to('/login')->with('message', 'login Failed');
+*/
+
+//$allProducts = DB::select('SELECT * FROM products');
+
+//return view('custom_views/user_views/products')->with('title',$title);
+
+//$typo= $request->typo; <-input
+
+//$allProducts = Product::where('pfor', 'like', 'Men%')->where('pname', 'like', $typo)->orWhere('price', 'like', $typo)->orWhere('category', 'like', $typo)->get();
+
+//$allProducts = DB::select('select * from products where pfor like ? and pname like ? or category like ? or price like ?', ['Men%',$typo,$typo,$typo]);
+
+//$allCartItems = Session::get('cartitems');
+
+//return response()->json($allCartItems);
+
+//return Response::json(array('success'=>true, 'res'=>$categories));
+
+/*
+
+$results = DB::select('select * from users where id = ?', [1]);
+
+DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
+
+DB::update('update users set votes = 100 where name = ?', ['John']);
+
+DB::delete('delete from users');
+
+*/
+
+//Storage::disk('public')->exists('images\test_image.jpg');
+//File::exists($image_path);
+//Storage::exists('your-path');
+//$exists = Storage::disk('local')->exists('file.jpg');
+
+//File::delete($image_path);
+//unlink($image_path);
+//File::deleteDirectory(public_path($image_path));
+//Storage::delete($image_path);

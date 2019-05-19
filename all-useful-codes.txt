@@ -1,0 +1,161 @@
+@if(file_exists('/custom_public/uploads/users/{{$message->msg_from}}/profilepic/{{$message->msg_from}}.jpg')) 
+                            <img src="/custom_public/uploads/users/{{$message->msg_from}}/profilepic/{{$message->msg_from}}.jpg" alt="sunil">
+                        @else
+                            <img src="/custom_public/images/user.png" alt="sunil">
+                        @endif
+
+
+
+$revenueMonth = Callback::whereMonth(
+    'created_at', '=', Carbon::now()->subMonth()->month
+);
+
+$revenueMonth = Callback::where(
+    'created_at', '>=', Carbon::now()->subDays(30)->toDateTimeString()
+);
+
+$revenueMonth = Callback::where(
+    'created_at', '>=', Carbon::now()->subMonth()->toDateTimeString()
+);
+--------
+
+You get all Callback for last 30 days:
+
+$revenueMonth = Callback::where(
+    'created_at', '>=', Carbon::now()->firstOfMonth()->toDateTimeString()
+);
+
+Get for current month:
+
+$revenueMonth = Callback::where(
+    'created_at', '>=', Carbon::now()->startOfMonth()->subMonth()->toDateString()
+);
+-------
+
+public function scopeRecent($query)
+{
+  return $query->where('created_at', '>', (new \Carbon\Carbon)->submonths(2) );
+}
+
+// consider created_at is the field you want to query on the model called News
+$date = new Carbon\Carbon; //  DateTime string will be 2014-04-03 13:57:34
+
+$date->subWeek(); // or $date->subDays(7),  2014-03-27 13:58:25
+
+News::where('created_at', '>', $date->toDateTimeString() )->get();
+-----------
+
+$date = \Carbon\Carbon::today()->subDays(30);
+
+$users = User::where('created_at', '>=', $date)->get();
+
+dd($users);
+----------------
+
+
+$today = Carbon::today();
+$events = Event::where('created_at', '>', $today->subDays(7))->get();
+$totalCount = $events->count(); //Should return your total number of events from past 7 days
+$response = array();
+$i = 0;
+while ($i < 7) {
+    $dayOfWeek = $today->subDays($i);
+    $eventsForThisDay = $events->where('created_at', $dayOfWeek);
+    $response[$dayOfWeek] = $eventsForThisDay->count();
+    $i++;
+}
+return response()->json($response);
+-----------------------------
+
+With the query builder you could do something like this:
+
+$date = Carbon::now()->subDays(7)->startOfDay();
+
+return DB::table('orders')
+    ->where('orders.created_at', '>=', $date)
+    ->join('items', 'orders.item_id', '=', 'items.id')
+    ->groupBy(DB::raw('DATE(orders.created_at)'))
+    ->select(
+        DB::raw('DATE(orders.created_at) as date'),
+        DB::raw('SUM(items.price) as total')
+    )->get();
+
+Output:
+
+[
+    {
+        "date": "2017-01-19",
+        "total": "6500"
+    },
+    {
+        "date": "2017-01-20",
+        "total": "1000"
+    },
+    {
+        "date": "2017-01-21",
+        "total": "4500"
+    }
+]
+-----------------------
+Last 30 Days:
+
+You need an accessor in your model.
+
+Assume your have a dates field in your table.
+
+public function getDatesAttribute($value)
+   {
+     $this->attributes['dates'] = Carbon::createFromFormat('m/d/Y', $value);
+   }
+The above function will convert the date from string to Carbon object. By default Laravel support Carbon.
+
+Now from you controller:
+
+$test = Test::where('dates', '>=', Carbon::now()->subMonth())->get();
+
+-----------------------
+
+You could always use carbon.
+
+To select within the current month
+
+Order::where('created_at', '>=', Carbon::now()->startOfMonth())->get();
+To select within the last month
+
+Order::where('created_at', '>=', Carbon::now()->subMonth())->get();
+
+------------------
+
+$dt = Carbon::now();
+
+echo $dt->toDateString();                // 2018-11-21
+echo $dt->toFormattedDateString();      // Nov 21, 2018
+echo $dt->toTimeString();               // 10:10:16
+echo $dt->toDateTimeString();           // 2018-11-21 10:10:16
+echo $dt->toDayDateTimeString();        // Sat, Nov 21, 2018 10:10 AM
+
+$past   = $dt->subMonth();
+$future = $dt->addMonth();
+--------
+
+$current = Carbon::now();
+$dt      = Carbon::now();
+
+$dt = $dt->subHours(6);
+echo $dt->diffInHours($current);         // -6
+echo $current->diffInHours($dt);         // 6
+
+$future = $current->addMonth();
+$past   = $current->subMonths(2);
+echo $current->diffInDays($future);      // 31
+echo $current->diffInDays($past);        // -62
+-----
+
+$dt     = Carbon::now();
+$past   = $dt->subMonth();
+$future = $dt->addMonth();
+
+echo $dt->subDays(10)->diffForHumans();     // 10 days ago
+echo $dt->diffForHumans($past);             // 1 month ago
+echo $dt->diffForHumans($future);           // 1 month before
+----------
