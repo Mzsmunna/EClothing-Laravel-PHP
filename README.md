@@ -17,6 +17,6 @@ custome username : mzs, password : 123
 
 <img src="demo/clothing-basic.gif" title="clothing.com"/>
 
-<img src="demo/clothing-user.gif" title="clothing.com"/>
+<img src="demo/clothing-user-2.gif" title="clothing.com"/>
 
 <img src="demo/clothing-admin.gif" title="clothing.com"/>
